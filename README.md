@@ -28,13 +28,21 @@ You can change the keys in Settings. Outputs never overwrite the original.
 
 Push a file drag against the right screen edge, or choose Float, to keep files in a floating shelf you can drag out of later.
 
+## Install
+
+1. Download `Clementine.dmg` from the Releases page and open it.
+2. Drag **Clementine** into **Applications**, then open it from there.
+3. The app is not notarized by Apple, so macOS blocks the first launch. Click **Done** on the warning, open **System Settings → Privacy & Security**, scroll to the Clementine message and click **Open Anyway**. On older macOS versions, right-click the app and choose **Open** instead. You only do this once.
+
+The app lives in the menu bar (no Dock icon). Look for it near the clock.
+
 ## Build
 
 ```bash
 ./build-app.sh
 ```
 
-This produces `dist/Clementine.app` (ad-hoc signed). It needs only the Xcode Command Line Tools with Swift 6. Optionally run `brew install ffmpeg webp` to enable MP3, FLAC and MKV, WebP output, and faster metadata stripping.
+This produces a universal (Apple silicon + Intel) `dist/Clementine.app`, ad-hoc signed. `./make-dmg.sh` wraps it into `dist/Clementine.dmg`. It needs only the Xcode Command Line Tools with Swift 6. Optionally run `brew install ffmpeg webp` to enable MP3, FLAC and MKV, WebP output, and faster metadata stripping.
 
 ## Command line
 
