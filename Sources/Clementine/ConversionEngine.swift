@@ -671,7 +671,7 @@ enum ArchiveConverter {
         case .tgz:
             let base = urls.count == 1 ? first.deletingPathExtension().lastPathComponent : "Archive"
             let out = OutputPlacement.uniqueURL(in: folder, base: base, ext: "tar.gz")
-            try Shell.run("/usr/bin/tar", ["-czf", out.path, "-C", first.deletingLastPathComponent().path] + urls.map(\.lastPathComponent))
+            try Shell.run("/usr/bin/tar", ["-czf", out.path, "-C", first.deletingLastPathComponent().path, "--"] + urls.map(\.lastPathComponent))
             return out
         default:
             let base = urls.count == 1 ? first.deletingPathExtension().lastPathComponent : "Archive"
@@ -679,7 +679,7 @@ enum ArchiveConverter {
             if urls.count == 1 {
                 try Shell.run("/usr/bin/ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", first.path, out.path])
             } else {
-                try Shell.run("/usr/bin/zip", ["-q", "-r", out.path] + urls.map(\.lastPathComponent),
+                try Shell.run("/usr/bin/zip", ["-q", "-r", out.path, "--"] + urls.map(\.lastPathComponent),
                               cwd: first.deletingLastPathComponent())
             }
             return out

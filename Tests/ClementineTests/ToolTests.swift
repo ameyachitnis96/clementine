@@ -97,6 +97,18 @@ struct ToolTests {
         #expect(FileManager.default.fileExists(atPath: good.path), "original kept")
     }
 
+    @Test func archivingTreatsDashNamesAsFiles() throws {
+        let dir = try Fixtures.dir()
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let files = ["--version", "-x.txt"].map { dir.appendingPathComponent($0) }
+        for f in files { try "hi".write(to: f, atomically: true, encoding: .utf8) }
+        for format in [ConversionFormat.zip, .tgz] {
+            let out = try ArchiveConverter.convert(files, to: format)
+            let listing = try Shell.run("/usr/bin/tar", ["-tf", out.path])
+            #expect(listing.contains("--version") && listing.contains("-x.txt"), "\(format.ext) holds both files")
+        }
+    }
+
     @Test func createPDFAndStripPDFMetadata() throws {
         let dir = try Fixtures.dir()
         defer { try? FileManager.default.removeItem(at: dir) }
